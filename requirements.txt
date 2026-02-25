@@ -1,0 +1,11 @@
+beautifulsoup4
+trafilatura
+httpx
+yt-dlp
+PyPDF2
+pdfplumber
+groq
+openai
+openai-whisper
+pillow
+pytesseract
