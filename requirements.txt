@@ -9,3 +9,6 @@ openai
 openai-whisper
 pillow
 pytesseract
+rich
+click
+typer

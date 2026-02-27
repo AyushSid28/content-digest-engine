@@ -1,0 +1,35 @@
+[build-system]
+requires=["setuptools>=61.2"]
+build-backend="setuptools.build-meta"
+
+
+[project]
+name="Summarise"
+version="0.1.0"
+description="A tool to summarise text and other stuff"
+readme="README.md"
+requires-python=">=3.8"
+classifiers=[
+    "Programming Language :: Python :: 3" 
+]
+
+dependencies=[
+    "beautifulsoup4",
+    "trafilatura",
+    "httpx",
+    "yt-dlp",
+    "typer",
+    "click",
+    "rich",
+    "pytesseract",
+    "pillow",
+    "openai-whisper",
+    "openai",
+    "PyPDF2",
+    "pdfplumber",
+    "groq"
+]
+
+[project.scripts]
+
+summarise="summarise.__main__:main"
