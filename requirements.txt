@@ -13,3 +13,6 @@ rich
 click
 typer
 python-dotenv
+pydantic
+PyPDF2
+pdfplumber                                                                                                                                                                                                                                                                                                                          
