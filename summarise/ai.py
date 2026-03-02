@@ -23,4 +23,6 @@ def stream_response(text:str,api_key:str,model:str)->Generator[str,None,None]:
         stream=True,
     )
     for chunk in response:
-        print(chunk.choices[0].delta.content or "",end="")
+        delta = chunk.choices[0].delta.content
+        if delta:
+            yield delta
