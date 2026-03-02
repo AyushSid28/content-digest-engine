@@ -14,8 +14,9 @@ def render_markdown(chunks, output_path: str | None = None):
             live.update(Markdown(full_text))
 
     console.print()
-
+    
     if output_path:
-        Path(output_path).write_text(full_text,encoding="utf-8")
-        console.print(f"[dim]Saved to {output_path}[/dim]")
+       Path(output_path).write_text(full_text, encoding="utf-8")
+       console.print(f"[dim]Saved to {output_path}[/dim]")
 
+   
