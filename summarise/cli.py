@@ -13,6 +13,6 @@ def main(
 
 
 ):
-    """Summarise URL using AI"""
+    """Summarise URL,file or Piped using AI"""
     from .core import summarise_pipeline
     summarise_pipeline(input=input,model=model,provider=provider,output=output)
