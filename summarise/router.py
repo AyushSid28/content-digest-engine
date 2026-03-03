@@ -1,5 +1,6 @@
 import sys
 from pathlib import Path
+from .youtube import YOUTUBE_PATTERNS
 
 #Detect if the input file isa URL,file or stdin
 def detect_input_type(input:str)->str:
@@ -7,6 +8,8 @@ def detect_input_type(input:str)->str:
         return "stdin"
 
     if input.startswith(("http://","https://")):
+        if is_youtube_url(input):
+            return "youtube"
         return "url"
 
     if Path(input).exists():
