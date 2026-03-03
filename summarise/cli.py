@@ -11,8 +11,10 @@ def main(
 
     output: Optional[str]=typer.Option(None,"--output","-o",help="Save summary to file instead of only printing",),
 
+    timestamps: bool = typer.Option(False,"--timestamps","-t",help="Input timestamps in Youtube summaries"),
+
 
 ):
     """Summarise URL,file or Piped using AI"""
     from .core import summarise_pipeline
-    summarise_pipeline(input=input,model=model,provider=provider,output=output)
+    summarise_pipeline(input=input,model=model,provider=provider,output=output,timestams=timestamps)
