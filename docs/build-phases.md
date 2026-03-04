@@ -55,6 +55,23 @@
 
 ---
 
+## Phase 3.5 — GitHub Repository Summarization
+
+**Goal:** Summarize a GitHub repository by pulling its README, structure, and metadata.
+
+| Task | Details |
+|------|---------|
+| GitHub URL detection | Detect `github.com/<owner>/<repo>` URLs (with or without trailing paths) |
+| Repo metadata | Fetch repo description, stars, language, topics via GitHub REST API |
+| README extraction | Fetch and parse the repo's README.md (raw content) |
+| Directory tree | Fetch the repo file tree to show project structure |
+| Tech stack detection | Identify tech stack from config files (`package.json`, `pyproject.toml`, `Cargo.toml`, etc.) |
+| Context assembly | Combine metadata + README + tree into a prompt-ready context |
+
+**Deliverable:** `summarise https://github.com/owner/repo` prints a project overview with purpose, tech stack, and structure.
+
+---
+
 ## Phase 4 — Audio Transcription (Whisper)
 
 **Goal:** Transcribe and summarize audio/video files and podcast URLs.
