@@ -1,5 +1,7 @@
 import asyncio
 from typing import Optional
+
+from summarise.youtube import fetch_transcript
 from .config import get_api_key
 from .fetcher import fetch_url
 from .extractor import extract_content
@@ -8,6 +10,7 @@ from .output import render_markdown,console
 from .router import detect_file_type,detect_input_type
 from .reader import read_text_file,read_pdf,read_stdin
 from .chunker import chunk_text,merge_summary
+from .youtube import fetch_metadata,download_audio,build_youtube_context
 
 
 def summarise_pipeline(input:str,model:str,provider:str,output:Optional[str]=None,):
@@ -28,6 +31,27 @@ def summarise_pipeline(input:str,model:str,provider:str,output:Optional[str]=Non
             html=asyncio.run(fetch_url(input))
             content=extract_content(html,input)
 
+        elif input_type=="youtube":
+            console.print(f"Fetching youtube video:{input}")
+            metadata=fetch_metadata(input)
+            console.print(f"Title: {metadata['title']}")
+            console.print(f"Channel: {metadata['channel']}")
+
+            transcript=fetch_transcript(input)
+            if transcript:
+                console.print(f"Transcript found:")
+                content=build_youtube_context(metadata,transcript)
+
+            else:
+                console.print("No transcript found,downloading audio for whisper support")
+                audio_path=download_audio(input)
+                console.print(f"Audio saved to {audio_path}")
+                content=(
+                    f"Title: {metadata['title']}\n"
+                    f"Channel: {metadata['channel']}\n"
+                    f"Description: {metadata('description','')[:1000]}\n\n"
+                    "Note: No transcripts were available summary is based on metadata only"
+                )
         elif input_type=="file":
             file_type=detect_file_type(input)
             console.print(f"Reading {input} as {file_type} ")
