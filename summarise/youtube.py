@@ -115,3 +115,29 @@ def download_audio(url:str,output_dir:str="/tmp") ->str:
     mp3_path=Path(output_dir)/f"{video_id}.mp3"
     if not mp3_path.exists():
         candidates=list(Path(output_dir).glob(f"{video_id}.*"))
+        if candidates:
+            return str(candidates[0])
+        raise FileNotFoundError(f"Downloaded audio not found at {video_id}")
+    return str(mp3_path)
+
+
+def format_duration(seconds:int)->str:
+    h, remainder=divmod(second,3600)
+    m, s=divmod(remainder,60)
+    if h:
+        return f"{h}h {m}m {s}s"
+    return f"{m}m {s}s"
+
+
+def build_youtube_context(metadata:dict,transcript:Str)-> str:
+    duration=format_duration(metadata["duration"]) if metadata["duration"] else "unknown"
+    header=(
+        f"Title: {metadata['title']}\n"
+        f"Channel: {metadata['channel']}\n"
+        f"Duration: {duration}\n"
+    )
+    if metadata["description"]:
+        desc=metadata["description"][:500]
+        header+=f"Description: {desc}\n"
+    header +=f"\n-- Transcript --\n{transcript}"
+    return header
