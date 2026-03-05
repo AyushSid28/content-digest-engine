@@ -95,3 +95,23 @@ def _parse_vtt(vtt_path:Path)->str:
             entries.append(f"[{current_time}] {text}")
 
     return "\n".join(entries)
+
+
+def download_audio(url:str,output_dir:str="/tmp") ->str:
+    out-path=Path(output_dir)/"%(id)s.%(ext)s"
+    result=subprocess.run(
+        [
+            "yt-dlp",
+            "-x","--audio-format","mp3",
+            "-o",str(out_path),
+            url,
+
+        ],
+        capture_output=True,text=True,timeout=300,
+    )
+    if result.returncode!=0:
+        raise RuntimeError(f"Audio download failed:{result.stderr.strip()}")
+    video_id=get_video_id(url)
+    mp3_path=Path(output_dir)/f"{video_id}.mp3"
+    if not mp3_path.exists():
+        candidates=list(Path(output_dir).glob(f"{video_id}.*"))
