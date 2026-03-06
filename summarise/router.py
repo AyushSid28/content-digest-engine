@@ -10,7 +10,13 @@ def detect_input_type(input:str)->str:
     if input.startswith(("http://","https://")):
         if is_youtube_url(input):
             return "youtube"
+       
+
+        if is_github_url(input):
+            return "github"
+
         return "url"
+    
 
     if Path(input).exists():
         return "file"
