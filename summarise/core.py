@@ -11,7 +11,7 @@ from .router import detect_file_type,detect_input_type
 from .reader import read_text_file,read_pdf,read_stdin
 from .chunker import chunk_text,merge_summary
 from .youtube import fetch_metadata,download_audio,build_youtube_context
-
+from .github import fetch_github_repo,fetch_readme,fetch_tree,build_github_context,parse_github_url
 
 def summarise_pipeline(input:str,model:str,provider:str,output:Optional[str]=None,):
     "PIPELINE: Fetch URL-> Extract Content->Summarise->Display"
@@ -52,6 +52,18 @@ def summarise_pipeline(input:str,model:str,provider:str,output:Optional[str]=Non
                     f"Description: {metadata('description','')[:1000]}\n\n"
                     "Note: No transcripts were available summary is based on metadata only"
                 )
+
+        elif input_type=="github":
+            console.print(f"Fetching github repository:{input}")
+            owner,repo=parse_github_url(input)
+            metadata=fetch_github_repo(owner,repo)
+            console.print(f"{metadata['name']} -{metadata['description']}")
+            console.print(f"{metadata["language"]} | Stars:{metadata['stars']} | Forks:{metadata['forks']} ")
+
+
+            readme=fetch_readme(owner,repo)
+            tree=fetch_tree(owner,repo)
+            content=build_github_context(metadata,readme,tree)
         elif input_type=="file":
             file_type=detect_file_type(input)
             console.print(f"Reading {input} as {file_type} ")
