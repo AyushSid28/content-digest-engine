@@ -28,7 +28,7 @@ def get_video_id(url:str)->str:
 #Pull the metadata like title,channel,duration,description using yt-dlp
 def fetch_metadata(url:str)->dict:
     result=subprocess.run(
-        ["yt-dlp","--dump.json","--no-download",url],
+        ["yt-dlp","--dump-json","--no-download",url],
         capture_output=True,text=True,timeout=30,
 
     )
@@ -46,7 +46,7 @@ def fetch_metadata(url:str)->dict:
 
 #Extract subtitles/transcript using yt-dlp returning text or None
 def fetch_transcript(url:str)->str|None:
-    with tempfile.TempraryDirectory() as tmpdir:
+    with tempfile.TemporaryDirectory() as tmpdir:
         out_path=Path(tmpdir)/"subs"
         result=subprocess.run(
             [
@@ -98,7 +98,7 @@ def _parse_vtt(vtt_path:Path)->str:
 
 
 def download_audio(url:str,output_dir:str="/tmp") ->str:
-    out-path=Path(output_dir)/"%(id)s.%(ext)s"
+    out_path=Path(output_dir)/"%(id)s.%(ext)s"
     result=subprocess.run(
         [
             "yt-dlp",
@@ -122,14 +122,14 @@ def download_audio(url:str,output_dir:str="/tmp") ->str:
 
 
 def format_duration(seconds:int)->str:
-    h, remainder=divmod(second,3600)
+    h, remainder=divmod(seconds,3600)
     m, s=divmod(remainder,60)
     if h:
         return f"{h}h {m}m {s}s"
     return f"{m}m {s}s"
 
 
-def build_youtube_context(metadata:dict,transcript:Str)-> str:
+def build_youtube_context(metadata:dict,transcript:str)-> str:
     duration=format_duration(metadata["duration"]) if metadata["duration"] else "unknown"
     header=(
         f"Title: {metadata['title']}\n"
