@@ -1,7 +1,5 @@
 import asyncio
 from typing import Optional
-
-from summarise.youtube import fetch_transcript
 from .config import get_api_key
 from .fetcher import fetch_url
 from .extractor import extract_content
@@ -10,10 +8,10 @@ from .output import render_markdown,console
 from .router import detect_file_type,detect_input_type
 from .reader import read_text_file,read_pdf,read_stdin
 from .chunker import chunk_text,merge_summary
-from .youtube import fetch_metadata,download_audio,build_youtube_context
-from .github import fetch_github_repo,fetch_readme,fetch_tree,build_github_context,parse_github_url
+from .youtube import fetch_metadata,fetch_transcript,download_audio,build_youtube_context
+from .github import parse_github_url,fetch_repo_metadata,fetch_readme,fetch_tree,build_github_context
 
-def summarise_pipeline(input:str,model:str,provider:str,output:Optional[str]=None,):
+def summarise_pipeline(input:str,model:str,provider:str,output:Optional[str]=None,timestamps:bool=False):
     "PIPELINE: Fetch URL-> Extract Content->Summarise->Display"
     console.print(f"Fetching: {input} ...")
 
@@ -49,16 +47,16 @@ def summarise_pipeline(input:str,model:str,provider:str,output:Optional[str]=Non
                 content=(
                     f"Title: {metadata['title']}\n"
                     f"Channel: {metadata['channel']}\n"
-                    f"Description: {metadata('description','')[:1000]}\n\n"
+                    f"Description: {metadata.get('description','')[:1000]}\n\n"
                     "Note: No transcripts were available summary is based on metadata only"
                 )
 
         elif input_type=="github":
             console.print(f"Fetching github repository:{input}")
             owner,repo=parse_github_url(input)
-            metadata=fetch_github_repo(owner,repo)
+            metadata=fetch_repo_metadata(owner,repo)
             console.print(f"{metadata['name']} -{metadata['description']}")
-            console.print(f"{metadata["language"]} | Stars:{metadata['stars']} | Forks:{metadata['forks']} ")
+            console.print(f"{metadata['language']} | Stars:{metadata['stars']} | Forks:{metadata['forks']} ")
 
 
             readme=fetch_readme(owner,repo)
