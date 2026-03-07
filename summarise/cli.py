@@ -17,4 +17,4 @@ def main(
 ):
     """Summarise URL,file or Piped using AI"""
     from .core import summarise_pipeline
-    summarise_pipeline(input=input,model=model,provider=provider,output=output,timestams=timestamps)
+    summarise_pipeline(input=input,model=model,provider=provider,output=output,timestamps=timestamps)
