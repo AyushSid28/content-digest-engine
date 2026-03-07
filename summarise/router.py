@@ -1,6 +1,7 @@
 import sys
 from pathlib import Path
-from .youtube import YOUTUBE_PATTERNS
+from .youtube import is_youtube_url
+from .github import is_github_url
 
 #Detect if the input file isa URL,file or stdin
 def detect_input_type(input:str)->str:
