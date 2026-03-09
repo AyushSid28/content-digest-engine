@@ -60,7 +60,7 @@ def summarise_pipeline(input:str,model:str,provider:str,output:Optional[str]=Non
 
 
             readme=fetch_readme(owner,repo)
-            tree=fetch_tree(owner,repo)
+            tree=fetch_tree(owner,repo,metadata['default_branch'])
             content=build_github_context(metadata,readme,tree)
         elif input_type=="file":
             file_type=detect_file_type(input)
