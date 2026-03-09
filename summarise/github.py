@@ -17,29 +17,28 @@ def parse_github_url(url:str)->tuple[str,str]:
         raise ValueError(f"Invalid Github URL: {url}")
     return match.group(1),match.group(2)
 
-def fetch_github_repo(owner:str,repo:str)->dict:
+def fetch_repo_metadata(owner:str,repo:str)->dict:
     """Fetch Repo info from Github Rest API"""
     url=f"https://api.github.com/repos/{owner}/{repo}"
     resp=httpx.get(url,timeout=15,headers={"Accept":"application/vnd.github.v3+json"})
     resp.raise_for_status()
     data=resp.json()
     return{
-        "name":data.get("name",""),
-        "description":data.get("description",""),
-        "stars":data.get("stargazers_count",0),
-        "language":data.get("language",""),
+        "name":data.get("full_name",""),
+        "description":data.get("description") or "",
+        "language":data.get("language") or "",
         "stars":data.get("stargazers_count",0),
         "forks":data.get("forks_count",0),
         "topics":data.get("topics",[]),
         "license":(data.get("license") or {}).get("spdx_id",""),
-        "default_branch":data.get("default_branch","main")
+        "default_branch":data.get("default_branch","main"),
     }
 
 def fetch_readme(owner:str,repo:str)->str:
     """Fetch the raw readme content"""
     url=f"https://api.github.com/repos/{owner}/{repo}/readme"
     resp=httpx.get(
-        url,tieout=15,
+        url,timeout=15,
         headers={"Accept":"application/vnd.github.v3.raw"}
     )
     if resp.status_code==404:
