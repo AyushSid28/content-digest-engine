@@ -20,7 +20,7 @@ def detect_input_type(input: str) -> str:
 
     if Path(input).exists():
         if is_audio_file(input):
-            return "audio"
+            return 
         return "file"
 
     raise ValueError(
