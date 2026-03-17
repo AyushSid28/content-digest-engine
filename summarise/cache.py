@@ -11,3 +11,4 @@ def cache_key(filepath:str)->str:
     stat=p.stat()
     raw=f"{p.resolve()}:{stat.st_size}:{stat.st_mtime}"
     return hashlib.sha256(raw.encode()).hexdigest()
+    
