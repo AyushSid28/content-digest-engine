@@ -45,7 +45,7 @@ def _transcribe_local(filepath:str)->str:
             "Local Whisper not installed."
         )
     model=whisper.load_model("base")
-    result=whisper.transcribe(model,filepath)
+    result=model.transcribe(filepath)
     return result["text"]
 
 
