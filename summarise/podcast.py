@@ -26,7 +26,7 @@ def fetch_podcast_audio(url:str)->str:
 
 
 def _is_direct_audio(url:str)->bool:
-  return bool(re.search(r"\.(mp3|m4a|ogg|wav)(\?.*)",url,re.IGNORECASE))
+  return bool(re.search(r"\.(mp3|m4a|ogg|wav|aac)(\?.*)?$",url,re.IGNORECASE))
 
 def _download_audio(url:str)->str:
     """Download audio from a direct url to a temp file"""
@@ -46,7 +46,7 @@ def _download_from_feed(url:str)->str:
     resp=httpx.get(url,follow_redirects=True,timeout=30.0)
     resp.raise_for_status()
     try:
-        root=ElementTree.formstring(resp.text)
+        root=ElementTree.fromstring(resp.text)
     except ElementTree.ParseError:
         raise ValueError(f"Could not parse RSS feed: {url}")
 
