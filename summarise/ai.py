@@ -1,5 +1,6 @@
 from typing import Generator
 from groq import Groq
+from .providers import create_provider,stream_with_fallback,DEFAULT_MODELS
 
 
 SYSTEM_PROMPT=(
@@ -11,18 +12,15 @@ SYSTEM_PROMPT=(
 )
 
 #Streaming the response baccha
-def stream_response(text:str,api_key:str,model:str)->Generator[str,None,None]:
-    client=Groq(api_key=api_key)
+def stream_response(text:str,api_key:str,model:str,provider_name:str="groq")->Generator[str,None,None]:
+    provider=create_provider(provider_name,api_key)
+    yield from provider.stream(text,model)
 
-    response=client.chat.completions.create(
-        model=model,
-        messages=[
-            {"role":"system","content":SYSTEM_PROMPT},
-            {"role":"user","content":text}
-        ],
-        stream=True,
-    )
-    for chunk in response:
-        delta = chunk.choices[0].delta.content
-        if delta:
-            yield delta
+
+
+def stream_response_with_fallback(
+ text: str, api_keys: dict, model: str | None = None,
+    preferred: str | None = None,
+) -> Generator[str, None, None]:
+    """Stream with automatic fallback across providers."""
+    yield from stream_with_fallback(text, api_keys, model=model, preferred=preferred)
