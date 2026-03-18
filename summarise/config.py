@@ -7,13 +7,17 @@ def load_env():
     except ImportError:
         pass
 
+KEY_MAP={
+    "groq": "GROQ_API_KEY",
+    "openai": "OPENAI_API_KEY", 
+    "openrouter": "OPENROUTER_API_KEY",
+}
+
 
 def get_api_key(provider:str):
     load_env()
-    key_map={
-        "groq": "GROQ_API_KEY",
-    }
-    env_var=key_map.get(provider)
+  
+    env_var=KEY_MAP.get(provider)
     if not env_var:
         raise SystemExit(f"Unknown provider: '{provider}'")
 
