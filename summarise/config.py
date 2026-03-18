@@ -23,3 +23,14 @@ def get_api_key(provider:str):
             f"API key not found. Set {env_var} in your .env file or environment."
         )
     return key 
+
+
+def get_all_api_keys()->dict:
+    """Return all available api keys"""
+    load_env()
+    keys={}
+    for provider,env_var in KEY_MAP.items():
+        key=os.getenv(env_var)
+        if key:
+            keys[provider]=key
+    return keys
