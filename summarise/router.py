@@ -4,6 +4,7 @@ from .youtube import is_youtube_url
 from .github import is_github_url
 from .transcriber import is_audio_file
 from .podcast import is_podcast_url
+from .ocr import is_image_file
 
 def detect_input_type(input: str) -> str:
     if input == "-":
