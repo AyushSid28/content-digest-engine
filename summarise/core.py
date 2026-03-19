@@ -12,6 +12,8 @@ from .youtube import fetch_metadata, fetch_transcript, download_audio, build_you
 from .github import parse_github_url, fetch_repo_metadata, fetch_readme, fetch_tree, build_github_context
 from .transcriber import transcribe
 from .podcast import fetch_podcast_audio
+from .ocr import process_image
+
 
 
 def summarise_pipeline(input: str, model: str, provider: str, output: Optional[str] = None, timestamps: bool = False):
@@ -23,7 +25,18 @@ def summarise_pipeline(input: str, model: str, provider: str, output: Optional[s
         raise SystemExit(1)
 
     console.print(f"[bold]Input type:[/bold] {input_type}")
-    api_key = get_api_key(provider)
+    try:
+        api_key = get_api_key(provider)
+    except SystemExit:
+        api_key=None
+
+    all_keys=get_all_api_key()
+    if not api_key and not all_keys:
+        console.print("API keys configured.")
+        raise SystemExit(1)
+
+    groq_key=api_key if provider=="groq" else all_keys.get("groq")
+
 
     try:
         if input_type == "url":
@@ -72,6 +85,12 @@ def summarise_pipeline(input: str, model: str, provider: str, output: Optional[s
             console.print(f"[bold]Transcribing...[/bold]")
             content = transcribe(audio_path, api_key=api_key)
             console.print("[bold]Transcription complete[/bold]")
+
+        elif input_type=="image":
+            console.print(f"[bold]Processing image:[/bold] {input} ...")
+            vision_key=all_keys.get("openai")
+            content=process_image(input,api_key=api_key,vision_provider="openai" if vision_key else None)
+            console.print("Image processed")
 
         elif input_type == "file":
             file_type = detect_file_type(input)
