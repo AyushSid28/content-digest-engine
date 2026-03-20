@@ -17,7 +17,7 @@ DEFAULT_MODELS = {
 
 class Provider(ABC):
     @abstractmethod
-    def stream(self, text: str, model: str) -> Generator[str, None, None]:
+    def stream(self, text: str, model: str, system_prompt: str | None = None) -> Generator[str, None, None]:
         ...
 
     @abstractmethod
@@ -33,11 +33,12 @@ class GroqProvider(Provider):
     def name(self) -> str:
         return "groq"
 
-    def stream(self, text: str, model: str) -> Generator[str, None, None]:
+    def stream(self, text: str, model: str, system_prompt: str | None = None) -> Generator[str, None, None]:
+        prompt = system_prompt or SYSTEM_PROMPT
         response = self.client.chat.completions.create(
             model=model,
             messages=[
-                {"role": "system", "content": SYSTEM_PROMPT},
+                {"role": "system", "content": prompt},
                 {"role": "user", "content": text},
             ],
             stream=True,
@@ -56,11 +57,12 @@ class OpenAIProvider(Provider):
     def name(self) -> str:
         return "openai"
 
-    def stream(self, text: str, model: str) -> Generator[str, None, None]:
+    def stream(self, text: str, model: str, system_prompt: str | None = None) -> Generator[str, None, None]:
+        prompt = system_prompt or SYSTEM_PROMPT
         response = self.client.chat.completions.create(
             model=model,
             messages=[
-                {"role": "system", "content": SYSTEM_PROMPT},
+                {"role": "system", "content": prompt},
                 {"role": "user", "content": text},
             ],
             stream=True,
@@ -82,11 +84,12 @@ class OpenRouterProvider(Provider):
     def name(self) -> str:
         return "openrouter"
 
-    def stream(self, text: str, model: str) -> Generator[str, None, None]:
+    def stream(self, text: str, model: str, system_prompt: str | None = None) -> Generator[str, None, None]:
+        prompt = system_prompt or SYSTEM_PROMPT
         response = self.client.chat.completions.create(
             model=model,
             messages=[
-                {"role": "system", "content": SYSTEM_PROMPT},
+                {"role": "system", "content": prompt},
                 {"role": "user", "content": text},
             ],
             stream=True,
@@ -125,7 +128,7 @@ def auto_select_model(provider_name: str, content_length: int) -> str:
 
 def stream_with_fallback(
     text: str, api_keys: dict, model: str | None = None,
-    preferred: str | None = None,
+    preferred: str | None = None, system_prompt: str | None = None,
 ) -> Generator[str, None, None]:
     chain = _build_chain(preferred, api_keys)
 
@@ -137,7 +140,7 @@ def stream_with_fallback(
         use_model = model or auto_select_model(provider_name, len(text))
         try:
             provider = create_provider(provider_name, key)
-            chunks = list(provider.stream(text, use_model))
+            chunks = list(provider.stream(text, use_model, system_prompt=system_prompt))
             yield from chunks
             return
         except Exception as e:
