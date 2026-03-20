@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Summarise</title>
+  <link rel="stylesheet" href="sidepanel.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Summarise</h1>
+
+    <div class="controls">
+      <select id="theme">
+        <option value="default">Default</option>
+        <option value="minimal">Minimal</option>
+        <option value="detailed">Detailed</option>
+        <option value="bullet-points">Bullet Points</option>
+      </select>
+
+      <select id="provider">
+        <option value="groq">Groq</option>
+        <option value="openai">OpenAI</option>
+        <option value="openrouter">OpenRouter</option>
+      </select>
+
+      <button id="summarise-btn">Summarise this page</button>
+    </div>
+
+    <div id="status" class="status"></div>
+    <div id="output" class="output"></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="sidepanel.js"></script>
+</body>
+</html>
