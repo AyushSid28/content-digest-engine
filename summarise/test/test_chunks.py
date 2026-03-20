@@ -12,8 +12,9 @@ def test_get_api_key_unknown():
     with pytest.raises(SystemExit):
         get_api_key("unknown_provider")
 
+@patch("summarise.config.load_env")
 @patch.dict(os.environ, {}, clear=True)
-def test_get_api_key_missing():
+def test_get_api_key_missing(mock_load):
     with pytest.raises(SystemExit):
         get_api_key("groq")
 
@@ -24,7 +25,8 @@ def test_get_all_api_keys():
     assert keys["openai"] == "o-key"
     assert "openrouter" not in keys
 
+@patch("summarise.config.load_env")
 @patch.dict(os.environ, {}, clear=True)
-def test_get_all_api_keys_empty():
+def test_get_all_api_keys_empty(mock_load):
     keys = get_all_api_keys()
     assert keys == {}
