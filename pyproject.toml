@@ -40,6 +40,9 @@ whisper = ["openai-whisper"]
 dev = ["pytest", "pytest-cov"]
 server = ["fastapi", "uvicorn[standard]"]
 
+[tool.setuptools.packages.find]
+include = ["summarise*"]
+
 [project.scripts]
 summarise = "summarise.__main__:main"
 
