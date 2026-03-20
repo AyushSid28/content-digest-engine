@@ -13,8 +13,14 @@ def main(
 
     timestamps: bool = typer.Option(False,"--timestamps","-t",help="Input timestamps in Youtube summaries"),
 
+    json_mode:bool=typer.Option(False,"--json","-j",help="output structured JSON instead of Markdown"),
+
+    theme:str=typer.Option(
+        "default","--theme",help="Output theme: default,minimal,detailed,bullet-points",
+    ),
+
 
 ):
     """Summarise URL,file or Piped using AI"""
     from .core import summarise_pipeline
-    summarise_pipeline(input=input,model=model,provider=provider,output=output,timestamps=timestamps)
+    summarise_pipeline(input=input,model=model,provider=provider,output=output,timestamps=timestamps,json_mode=json_mode,theme=theme,)
