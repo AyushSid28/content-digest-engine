@@ -38,6 +38,7 @@ dependencies = [
 [project.optional-dependencies]
 whisper = ["openai-whisper"]
 dev = ["pytest", "pytest-cov"]
+server = ["fastapi", "uvicorn[standard]"]
 
 [project.scripts]
 summarise = "summarise.__main__:main"
