@@ -1,34 +1,44 @@
 [build-system]
-requires=["setuptools>=61.2"]
+requires = ["setuptools>=61.2"]
 build-backend = "setuptools.build_meta"
 
-
 [project]
-name="Summarise"
-version="0.1.0"
-description="A tool to summarise URLs, files, and more using AI"
-readme="README.md"
-requires-python=">=3.10"
-classifiers=[
-    "Programming Language :: Python :: 3" 
+name = "summarise-cli"
+version = "0.1.0"
+description = "AI-powered CLI to summarise URLs, files, PDFs, YouTube videos, GitHub repos, audio, and images"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "License :: OSI Approved :: MIT License",
+    "Topic :: Utilities",
+    "Environment :: Console",
+]
+dependencies = [
+    "typer>=0.9",
+    "rich",
+    "httpx",
+    "trafilatura",
+    "beautifulsoup4",
+    "groq",
+    "openai",
+    "python-dotenv",
+    "pdfplumber",
+    "PyPDF2",
+    "yt-dlp",
+    "pillow",
+    "pytesseract",
 ]
 
-dependencies=[
-    "beautifulsoup4",
-    "trafilatura",
-    "httpx",
-    "yt-dlp",
-    "typer",
-    "click",
-    "rich",
-    "pytesseract",
-    "pillow",
-    "openai-whisper",
-    "openai",
-    "PyPDF2",
-    "pdfplumber",
-    "groq"
-]
+[project.optional-dependencies]
+whisper = ["openai-whisper"]
+dev = ["pytest", "pytest-cov"]
 
 [project.scripts]
-summarise="summarise.__main__:main"
+summarise = "summarise.__main__:main"
+
