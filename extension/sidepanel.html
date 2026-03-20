@@ -7,30 +7,20 @@
 </head>
 <body>
   <div class="container">
-    <h1>Summarise</h1>
-
-    <div class="controls">
-      <select id="theme">
-        <option value="default">Default</option>
-        <option value="minimal">Minimal</option>
-        <option value="detailed">Detailed</option>
-        <option value="bullet-points">Bullet Points</option>
-      </select>
-
-      <select id="provider">
-        <option value="groq">Groq</option>
-        <option value="openai">OpenAI</option>
-        <option value="openrouter">OpenRouter</option>
-      </select>
-
-      <button id="summarise-btn">Summarise this page</button>
+    <div class="header">
+      <h1>Summarise</h1>
+      <button id="summarise-btn" class="btn-primary">Summarise this page</button>
     </div>
 
+    <div id="page-info" class="page-info"></div>
     <div id="status" class="status"></div>
     <div id="output" class="output"></div>
+    <div id="setup-msg" class="setup-msg" style="display:none;">
+      <p>No API key configured.</p>
+      <p>Click the extension icon → enter your <a href="https://console.groq.com" target="_blank">Groq API key</a> (free).</p>
+    </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <script src="sidepanel.js"></script>
 </body>
 </html>

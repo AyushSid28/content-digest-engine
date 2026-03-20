@@ -1,9 +1,14 @@
 {
   "manifest_version": 3,
   "name": "Summarise",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "One-click AI summarisation for any page",
-  "permissions": ["activeTab", "sidePanel"],
+  "permissions": [
+    "activeTab",
+    "sidePanel",
+    "scripting",
+    "storage"
+  ],
   "side_panel": {
     "default_path": "sidepanel.html"
   },
@@ -11,7 +16,8 @@
     "service_worker": "background.js"
   },
   "action": {
-    "default_title": "Summarise this page"
+    "default_title": "Summarise this page",
+    "default_popup": "settings.html"
   },
   "icons": {
     "48": "icon.png",
